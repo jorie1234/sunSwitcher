@@ -1,8 +1,9 @@
 version: '3.4'
 
 services:
-  gohuhnwatch:
-    image: jorie70/sunsetter:0.0.1
+  sunswitcher:
+    image: jorie70/sunswitcher:0.0.1
+    container_name: sunswitcher
     restart: always
     logging:
       driver: "json-file"
