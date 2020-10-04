@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  gohuhnwatch:
+    image: jorie70/sunSwitcher:0.0.1
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "10"
