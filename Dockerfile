@@ -10,4 +10,3 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 COPY --from=builder /go/src/app/app /app
 ENTRYPOINT ./app
-LABEL Name=sunswitcher Version=0.0.1
