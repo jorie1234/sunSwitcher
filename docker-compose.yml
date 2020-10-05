@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   sunswitcher:
-    image: jorie70/sunswitcher:0.0.3
+    image: jorie70/sunswitcher:0.0.4
     container_name: sunswitcher
     restart: always
     environment:

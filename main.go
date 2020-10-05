@@ -9,7 +9,11 @@ import (
 
 func main() {
 
-	t := time.Now()
+	loc, err := time.LoadLocation("Europe/Berlin")
+	if err != nil {
+		log.Println(err)
+	}
+	t := time.Now().In(loc)
 	zone, offset := t.Zone()
 	fmt.Println(zone, offset)
 
