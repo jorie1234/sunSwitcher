@@ -26,6 +26,7 @@ func main() {
 	}
 	mqtt := NewMqtt("ubuntu", "sunSwitch")
 	for {
+		t := time.Now()
 		// Calculate the sunrise and sunset times
 		sunrise, sunset, err := p.GetSunriseSunset()
 		sunrise = time.Date(t.Year(), t.Month(), t.Day(), sunrise.Hour(), sunrise.Minute(), sunrise.Second(), 0, t.Location())
@@ -38,7 +39,6 @@ func main() {
 			log.Println(err)
 		}
 
-		t := time.Now()
 		if t.Before(sunrise) {
 			//Wait until sunrise....
 			timeToSunrise := sunrise.Sub(t)
