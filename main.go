@@ -17,16 +17,16 @@ func main() {
 	zone, offset := t.Zone()
 	fmt.Println(zone, offset)
 
-	// You can use the Parameters structure to set the parameters
-	p := sunrisesunset.Parameters{
-		Latitude:  52.297754,
-		Longitude: 9.940568,
-		UtcOffset: float64(offset / 3600),
-		Date:      t,
-	}
 	mqtt := NewMqtt("ubuntu", "sunSwitch")
 	for {
-		t := time.Now()
+		t := time.Now().In(loc)
+		// You can use the Parameters structure to set the parameters
+		p := sunrisesunset.Parameters{
+			Latitude:  52.297754,
+			Longitude: 9.940568,
+			UtcOffset: float64(offset / 3600),
+			Date:      t,
+		}
 		// Calculate the sunrise and sunset times
 		sunrise, sunset, err := p.GetSunriseSunset()
 		sunrise = time.Date(t.Year(), t.Month(), t.Day(), sunrise.Hour(), sunrise.Minute(), sunrise.Second(), 0, t.Location())
@@ -51,7 +51,7 @@ func main() {
 			}
 		}
 
-		t = time.Now()
+		t = time.Now().In(loc)
 		if t.Before(sunset) {
 			//Wait until sunset....
 			timeToSunset := sunset.Sub(t)
@@ -64,7 +64,7 @@ func main() {
 			}
 		}
 		//Wait for next day.....
-		t = time.Now()
+		t = time.Now().In(loc)
 		timeToTomorrow := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.Local).Add(26 * time.Hour).Sub(t)
 		log.Printf("waiting for tomorrow in %s", timeToTomorrow)
 		time.Sleep(timeToTomorrow)
