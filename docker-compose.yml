@@ -1,5 +1,4 @@
 version: '3.4'
-
 services:
   sunswitcher:
     image: jorie70/sunswitcher:latest
@@ -7,8 +6,3 @@ services:
     restart: always
     environment:
       - "TZ=Europe/Berlin"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10M"
-        max-file: "10"
