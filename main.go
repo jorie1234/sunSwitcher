@@ -45,10 +45,8 @@ func main() {
 			log.Printf("waiting for sunrise in %s", timeToSunrise)
 			time.Sleep(timeToSunrise)
 			log.Print("Lampe ausschalten")
-			err := mqtt.Publish("cmnd/sonoff_6269/POWER", "0")
-			if err != nil {
-				log.Printf("mqtt publish error %s", err)
-			}
+			SetPowerState(mqtt, "cmnd/sonoff_6269/POWER", "0")
+			SetPowerState(mqtt, "cmnd/sonoff_8125/POWER", "0")
 		}
 
 		t = time.Now().In(loc)
@@ -58,10 +56,8 @@ func main() {
 			log.Printf("waiting for sunset in %s", timeToSunset)
 			time.Sleep(timeToSunset)
 			log.Print("Lampe einschalten")
-			err := mqtt.Publish("cmnd/sonoff_6269/POWER", "1")
-			if err != nil {
-				log.Printf("mqtt publish error %s", err)
-			}
+			SetPowerState(mqtt, "cmnd/sonoff_6269/POWER", "1")
+			SetPowerState(mqtt, "cmnd/sonoff_8125/POWER", "1")
 		}
 		//Wait for next day.....
 		t = time.Now().In(loc)
@@ -69,5 +65,12 @@ func main() {
 		log.Printf("waiting for tomorrow in %s", timeToTomorrow)
 		time.Sleep(timeToTomorrow)
 
+	}
+}
+
+func SetPowerState( mqtt *mqttClient, device, state string) {
+	err := mqtt.Publish(device, state)
+	if err != nil {
+		log.Printf("mqtt publish %s state %s error %s", device, state, err)
 	}
 }
