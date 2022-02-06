@@ -68,9 +68,16 @@ func main() {
 	}
 }
 
-func SetPowerState( mqtt *mqttClient, device, state string) {
+func SetPowerState( mqtt *mqttClient, device, state string) error {
 	err := mqtt.Publish(device, state)
 	if err != nil {
 		log.Printf("mqtt publish %s state %s error %s", device, state, err)
+		mqtt.Connect()
+		err = mqtt.Publish(device, state)
+		if err != nil {
+			log.Printf("2. try: mqtt publish %s state %s error %s", device, state, err)
+			return err
+		}
 	}
+	return nil
 }

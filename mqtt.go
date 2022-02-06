@@ -11,7 +11,9 @@ import (
 )
 
 type mqttClient struct {
-	client *client.Client
+	client     *client.Client
+	server     string
+	clientname string
 }
 
 type mqttMsg struct {
@@ -31,22 +33,31 @@ func NewMqtt(server, clientName string) *mqttClient {
 			fmt.Println(err)
 		},
 	})
+	m := &mqttClient{
+		client:     cli,
+		server:     server,
+		clientname: clientName,
+	}
+
+	m.Connect()
+
+	return m
+}
+
+func (m *mqttClient) Connect() {
 
 	// Connect to the MQTT Server.
-	err := cli.Connect(&client.ConnectOptions{
-		Network:  "tcp",
-		Address:  fmt.Sprintf("%s:1883", server),
-		ClientID: []byte(clientName),
+	err := m.client.Connect(&client.ConnectOptions{
+		Network:   "tcp",
+		Address:   fmt.Sprintf("%s:1883", m.server),
+		ClientID:  []byte(m.clientname),
+		KeepAlive: 30,
 	})
 	if err != nil {
 		panic(err)
 	}
 
 	log.Printf("Connected...")
-
-	return &mqttClient{
-		client: cli,
-	}
 }
 
 func (m mqttClient) Subscribe(topic string) <-chan mqttMsg {
