@@ -30,7 +30,7 @@ func NewMqtt(server, clientName string) *mqttClient {
 	cli := client.New(&client.Options{
 		// Define the processing of the error handler.
 		ErrorHandler: func(err error) {
-			fmt.Println(err)
+			log.Fatal(err)
 		},
 	})
 	m := &mqttClient{
