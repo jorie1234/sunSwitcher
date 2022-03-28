@@ -17,7 +17,7 @@ func main() {
 	zone, offset := t.Zone()
 	fmt.Println(zone, offset)
 
-	mqtt := NewMqtt("ubuntu", "sunSwitch")
+	mqtt := NewMqtt("tcp://192.168.178.93:1883", "sunSwitch")
 	for {
 		t := time.Now().In(loc)
 		// You can use the Parameters structure to set the parameters
@@ -68,11 +68,10 @@ func main() {
 	}
 }
 
-func SetPowerState( mqtt *mqttClient, device, state string) error {
+func SetPowerState(mqtt *mqttClient, device, state string) error {
 	err := mqtt.Publish(device, state)
 	if err != nil {
 		log.Printf("mqtt publish %s state %s error %s", device, state, err)
-		mqtt.Connect()
 		err = mqtt.Publish(device, state)
 		if err != nil {
 			log.Printf("2. try: mqtt publish %s state %s error %s", device, state, err)
