@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/kelvins/sunrisesunset"
 	"log"
 	"time"
@@ -9,17 +8,15 @@ import (
 
 func main() {
 
-	loc, err := time.LoadLocation("Europe/Berlin")
-	if err != nil {
-		log.Println(err)
-	}
-	t := time.Now().In(loc)
-	zone, offset := t.Zone()
-	fmt.Println(zone, offset)
-
 	mqtt := NewMqtt("tcp://192.168.178.93:1883", "sunSwitch")
 	for {
+		loc, err := time.LoadLocation("Europe/Berlin")
+		if err != nil {
+			log.Println(err)
+		}
 		t := time.Now().In(loc)
+		zone, offset := t.Zone()
+		log.Println(zone, offset)
 		// You can use the Parameters structure to set the parameters
 		p := sunrisesunset.Parameters{
 			Latitude:  52.297754,
